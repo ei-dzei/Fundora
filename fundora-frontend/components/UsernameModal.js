@@ -20,7 +20,7 @@ export default function UsernameModal({ address, onClose, onSave }) {
 
         <div className="mt-4">
           <label className="block text-sm">Username</label>
-          <input value={name} onChange={(e) => setName(e.target.value)} className="mt-1 w-full border rounded px-3 py-2" placeholder="e.g. angeline" />
+          <input value={name} onChange={(e) => setName(e.target.value)} className="mt-1 w-full border rounded px-3 py-2" placeholder="e.g. User" />
         </div>
 
         <div className="mt-4 flex justify-end gap-3">
