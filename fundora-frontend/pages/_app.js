@@ -1,33 +1,38 @@
 import '../styles/globals.css'
-import '@rainbow-me/rainbowkit/styles.css'
-import { getDefaultWallets, RainbowKitProvider, ConnectButton } from '@rainbow-me/rainbowkit'
-import { configureChains, createClient, WagmiConfig } from 'wagmi'
-import { alchemyProvider } from 'wagmi/providers/alchemy'
-import { publicProvider } from 'wagmi/providers/public'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { WagmiConfig, createConfig, configureChains } from 'wagmi'
 import { mainnet, polygon, optimism, arbitrum } from 'wagmi/chains'
+import { publicProvider } from 'wagmi/providers/public'
+import { RainbowKitProvider, getDefaultWallets } from '@rainbow-me/rainbowkit'
+import '@rainbow-me/rainbowkit/styles.css'
 
-const { chains, provider } = configureChains(
+const { chains, publicClient } = configureChains(
   [mainnet, polygon, optimism, arbitrum],
   [publicProvider()]
 )
 
 const { connectors } = getDefaultWallets({
   appName: 'Fundora',
-  chains
+  projectId: 'ebb1631ee5816afdbf496918c3802f7e',
+  chains,
 })
 
-const wagmiClient = createClient({
+const wagmiConfig = createConfig({
   autoConnect: true,
   connectors,
-  provider
+  publicClient,
 })
+
+const queryClient = new QueryClient()
 
 export default function App({ Component, pageProps }) {
   return (
-    <WagmiConfig client={wagmiClient}>
-      <RainbowKitProvider chains={chains} showRecentTransactions={true}>
-        <Component {...pageProps} />
-      </RainbowKitProvider>
+    <WagmiConfig config={wagmiConfig}>
+      <QueryClientProvider client={queryClient}>
+        <RainbowKitProvider chains={chains}>
+          <Component {...pageProps} />
+        </RainbowKitProvider>
+      </QueryClientProvider>
     </WagmiConfig>
   )
 }

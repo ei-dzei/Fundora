@@ -45,11 +45,13 @@ export default function Navbar() {
     <nav className="bg-transparent px-6 py-4 fixed top-0 left-0 right-0 z-30">
       <div className="max-w-6xl mx-auto flex items-center justify-between">
         <div className="flex items-center gap-6">
-          <Link href="/"><a className="text-white font-bold">Fundora</a></Link>
+          {/* ✅ Removed <a> inside <Link> */}
+          <Link href="/" className="text-white font-bold">Fundora</Link>
+
           <div className="hidden md:flex gap-6 text-gray-200">
-            <Link href="/"><a>Home</a></Link>
-            <Link href="/faucet"><a>Faucet</a></Link>
-            <Link href="/about"><a>About</a></Link>
+            <Link href="/">Home</Link>
+            <Link href="/faucet">Faucet</Link>
+            <Link href="/about">About</Link>
           </div>
         </div>
 
@@ -57,15 +59,31 @@ export default function Navbar() {
           {address && username && (
             <div className="hidden sm:block text-right mr-4">
               <div className="text-sm font-medium text-white">{username}</div>
-              <div className="text-xs text-gray-300">{address.slice(0,6)}...{address.slice(-4)}</div>
+              <div className="text-xs text-gray-300">
+                {address.slice(0, 6)}...{address.slice(-4)}
+              </div>
             </div>
           )}
           <ConnectButton showBalance={false} chainStatus="icon" accountStatus="address" />
-          <button onClick={handleLogout} className="ml-3 px-3 py-2 bg-transparent border border-gray-600 text-gray-200 rounded">Logout</button>
+          <button
+            onClick={handleLogout}
+            className="ml-3 px-3 py-2 bg-transparent border border-gray-600 text-gray-200 rounded"
+          >
+            Logout
+          </button>
         </div>
       </div>
 
-      {showUsernameModal && <UsernameModal address={address} onClose={() => setShowUsernameModal(false)} onSave={(name) => { setUsername(name); setShowUsernameModal(false)}} />}
+      {showUsernameModal && (
+        <UsernameModal
+          address={address}
+          onClose={() => setShowUsernameModal(false)}
+          onSave={(name) => {
+            setUsername(name)
+            setShowUsernameModal(false)
+          }}
+        />
+      )}
     </nav>
-)
+  )
 }
