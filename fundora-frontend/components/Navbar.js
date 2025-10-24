@@ -45,7 +45,6 @@ export default function Navbar() {
     <nav className="bg-transparent px-6 py-4 fixed top-0 left-0 right-0 z-30">
       <div className="max-w-6xl mx-auto flex items-center justify-between">
         <div className="flex items-center gap-6">
-          {/* ✅ Removed <a> inside <Link> */}
           <Link href="/" className="text-white font-bold">Fundora</Link>
 
           <div className="hidden md:flex gap-6 text-gray-200">
