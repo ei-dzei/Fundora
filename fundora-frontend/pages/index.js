@@ -67,7 +67,7 @@ export default function Home() {
               <div className="w-12 h-12 rounded-full bg-pvteal text-pvdark flex items-center justify-center font-bold">1</div>
               <div className="text-left">
                 <div className="font-semibold">Connect Wallet</div>
-                <div className="text-gray-400 text-sm">Use your favorite web3 wallet to sign in — your address becomes your Fundora account.</div>
+                <div className="text-gray-400 text-sm">Use your web3 wallet to sign in — your address becomes your Fundora account.</div>
               </div>
             </div>
 

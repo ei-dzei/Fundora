@@ -30,7 +30,6 @@ export default function Navbar() {
       router.push('/')
       return
     }
-    // clear user-specific mock data
     localStorage.removeItem('fundora_username_' + address)
     localStorage.removeItem('fundora_vault_' + address)
     localStorage.removeItem('fundora_loan_' + address)
@@ -50,7 +49,6 @@ export default function Navbar() {
           <div className="hidden md:flex gap-6 text-gray-200">
             <Link href="/">Home</Link>
             <Link href="/faucet">Faucet</Link>
-            <Link href="/about">About</Link>
           </div>
         </div>
 

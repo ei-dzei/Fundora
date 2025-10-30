@@ -49,7 +49,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          <p className="text-gray-400 mt-4">Welcome — this dashboard shows your vault and loans (mocked locally and scoped to your wallet).</p>
+          <p className="text-gray-400 mt-4">Welcome — this dashboard shows your vault and loans.</p>
 
           <div className="mt-8 grid md:grid-cols-2 gap-6">
             <div className="p-6 bg-[#0b2b2b] rounded-lg">
