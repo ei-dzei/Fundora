@@ -6,7 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import DepositModal from "../components/DepositModal";
 import LoanModal from "../components/LoanModal";
-import TimelockModal from "../components/TimelockModal";
+import TimelockModal from "../components/TimelockModal"; 
 
 export default function HomePage() {
   const { address } = useAccount();
@@ -17,7 +17,7 @@ export default function HomePage() {
   const [walletUSDC, setWalletUSDC] = useState(0);
   const [showDeposit, setShowDeposit] = useState(false);
   const [showLoan, setShowLoan] = useState(false);
-  const [showTimelock, setShowTimelock] = useState(false);
+  const [showTimelock, setShowTimelock] = useState(false); 
 
   useEffect(() => {
     if (!address) return;
@@ -31,7 +31,7 @@ export default function HomePage() {
       const init = { balance: 0, timelockEndsAt: null };
       localStorage.setItem(vKey, JSON.stringify(init));
       setVault(init);
-      setShowTimelock(true);
+      setShowTimelock(true); 
     } else {
       const v = JSON.parse(rawVault);
       setVault(v);

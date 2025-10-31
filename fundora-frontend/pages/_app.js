@@ -14,8 +14,8 @@ import {
   polygon,
   optimism,
   arbitrum,
-  sepolia,          
-  // baseSepolia, 
+  sepolia,          // 👈 add Sepolia
+  // baseSepolia,    // 👈 uncomment if you plan to support Base Sepolia later
 } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
 
@@ -47,8 +47,8 @@ const queryClient = new QueryClient();
 export default function App({ Component, pageProps }) {
   const rkTheme = useMemo(() => {
     return darkTheme({
-      accentColor: "#14e1c1",           
-      accentColorForeground: "#071a1b", 
+      accentColor: "#14e1c1",          
+      accentColorForeground: "#071a1b",
       borderRadius: "large",
       overlayBlur: "small",
     });
@@ -59,7 +59,7 @@ export default function App({ Component, pageProps }) {
       <QueryClientProvider client={queryClient}>
         <RainbowKitProvider
           chains={chains}
-          initialChain={sepolia}    
+          initialChain={sepolia}     
           modalSize="compact"
           theme={rkTheme}
           appInfo={{

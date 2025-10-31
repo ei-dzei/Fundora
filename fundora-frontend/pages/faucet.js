@@ -440,7 +440,7 @@ export default function Faucet() {
               </div>
             </div>
 
-            {/* Help text */}
+            {/* Help */}
             <p className="mt-4 text-xs text-zinc-400">
               If you see “No contract bytecode… on chain 1”, switch your wallet to{" "}
               <span className="text-pvteal">Sepolia</span>.

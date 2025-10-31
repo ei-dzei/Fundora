@@ -23,7 +23,7 @@ export default function IndexPage() {
       const init = { balance: 0, timelockEndsAt: null };
       localStorage.setItem(key, JSON.stringify(init));
       setVault(init);
-      setShowTimelock(true);
+      setShowTimelock(true); 
     } else {
       const v = JSON.parse(raw);
       setVault(v);
