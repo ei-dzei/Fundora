@@ -13,6 +13,7 @@ const FaucetModule = buildModule("FaucetModule", (m) => {
 
   // We call the `transfer` function on the `mockUSDC` contract.
   m.call(mockUSDC, "transfer", [faucet, transferAmount], {
+    from: deployer,
     after: [faucet],
   });
 
