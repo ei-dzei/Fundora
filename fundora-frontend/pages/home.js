@@ -4,12 +4,16 @@ import Footer from "../components/Footer";
 import { useAccount } from "wagmi";
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
+import { useRouter } from "next/router";
+import confetti from "canvas-confetti";
 import DepositModal from "../components/DepositModal";
 import LoanModal from "../components/LoanModal";
-import TimelockModal from "../components/TimelockModal"; 
+import TimelockModal from "../components/TimelockModal";
 
 export default function HomePage() {
   const { address } = useAccount();
+  const router = useRouter();
+  const action = router.query?.action;
 
   const [username, setUsername] = useState(null);
   const [vault, setVault] = useState({ balance: 0, timelockEndsAt: null });
@@ -17,7 +21,9 @@ export default function HomePage() {
   const [walletUSDC, setWalletUSDC] = useState(0);
   const [showDeposit, setShowDeposit] = useState(false);
   const [showLoan, setShowLoan] = useState(false);
-  const [showTimelock, setShowTimelock] = useState(false); 
+  const [showTimelock, setShowTimelock] = useState(false);
+
+  const [showCoach, setShowCoach] = useState(false);
 
   useEffect(() => {
     if (!address) return;
@@ -31,7 +37,7 @@ export default function HomePage() {
       const init = { balance: 0, timelockEndsAt: null };
       localStorage.setItem(vKey, JSON.stringify(init));
       setVault(init);
-      setShowTimelock(true); 
+      setShowTimelock(true);
     } else {
       const v = JSON.parse(rawVault);
       setVault(v);
@@ -55,6 +61,28 @@ export default function HomePage() {
     if (loan) localStorage.setItem("fundora_loan_" + address, JSON.stringify(loan));
     else localStorage.removeItem("fundora_loan_" + address);
   }, [loan, address]);
+
+  useEffect(() => {
+    if (!address) return;
+
+    if (action === "deposit") {
+      if (vault?.timelockEndsAt) {
+        setShowDeposit(true);
+      } else {
+        setShowTimelock(true);
+      }
+      if (!localStorage.getItem("fundora_coach_deposit_shown")) {
+        setShowCoach(true);
+        localStorage.setItem("fundora_coach_deposit_shown", "1");
+      }
+    } else {
+      const hasLock = Boolean(vault?.timelockEndsAt);
+      const noBalance = Number(vault?.balance || 0) <= 0;
+      if (hasLock && noBalance && !localStorage.getItem("fundora_coach_deposit_shown")) {
+        setShowCoach(true);
+      }
+    }
+  }, [address, action, vault]);
 
   const shortAddr = (a) => (a ? `${a.slice(0, 6)}…${a.slice(-4)}` : "Not connected");
   const fmt = (n, max = 6) =>
@@ -111,10 +139,18 @@ export default function HomePage() {
     setShowDeposit(true);
   };
 
-  const handleSaveTimelock = (endsAt /* ms */, daysChosen) => {
+  const handleSaveTimelock = (endsAt /* ms */) => {
     const updated = { ...vault, timelockEndsAt: endsAt };
     setVault(updated);
     setShowTimelock(false);
+
+    if (!localStorage.getItem("fundora_coach_deposit_shown")) {
+      setShowCoach(true);
+      localStorage.setItem("fundora_coach_deposit_shown", "1");
+    }
+    setShowDeposit(true);
+    const { action: _a, ...rest } = router.query;
+    router.replace({ pathname: router.pathname, query: rest }, undefined, { shallow: true });
   };
 
   return (
@@ -134,6 +170,34 @@ export default function HomePage() {
             </h1>
             <div className="mt-1 text-sm text-zinc-400">{shortAddr(address)}</div>
           </div>
+
+          {/* Coachmark (nudge to deposit after timelock) */}
+          {showCoach && (
+            <div className="mb-5 rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-4 text-sm text-emerald-100">
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <div className="font-semibold">Vault created! Make your first deposit</div>
+                  <div className="mt-1 text-emerald-200/90">
+                    Your timelock is set. Deposit mock USDC now to start using your vault.
+                  </div>
+                </div>
+                <div className="shrink-0 flex gap-2">
+                  <button
+                    onClick={handleOpenDeposit}
+                    className="rounded-lg bg-pvteal px-3 py-2 font-semibold text-pvdark hover:opacity-90"
+                  >
+                    Deposit now
+                  </button>
+                  <button
+                    onClick={() => setShowCoach(false)}
+                    className="rounded-lg border border-white/10 bg-transparent px-3 py-2 text-zinc-200 hover:bg-white/5"
+                  >
+                    Dismiss
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* KPI rows */}
           <div className="grid gap-5 md:grid-cols-4">
@@ -157,12 +221,24 @@ export default function HomePage() {
                   <span className="text-lg font-semibold">Vault</span>
                 </div>
                 <button
-                  onClick={() => setShowTimelock(true)} 
+                  onClick={() => setShowTimelock(true)}
                   className="text-sm text-pvteal hover:underline"
                 >
                   Manage →
                 </button>
               </div>
+
+              {/* Status messages */}
+              {(!vault.timelockEndsAt) && (
+                <div className="mt-2 text-[11px] text-amber-300">
+                  No timelock set — create one in Home
+                </div>
+              )}
+              {(vault.timelockEndsAt && Number(vault.balance || 0) <= 0) && (
+                <div className="mt-2 text-[11px] text-emerald-300">
+                  Timelock active — deposit to start
+                </div>
+              )}
 
               <div className="space-y-3">
                 <Row label="Balance" value={`${fmt(vault.balance)} USDC`} strong />
@@ -194,7 +270,7 @@ export default function HomePage() {
 
               <div className="mt-5 flex gap-3">
                 <button
-                  onClick={handleOpenDeposit} 
+                  onClick={handleOpenDeposit}
                   className="inline-flex items-center justify-center rounded-xl bg-pvteal px-4 py-2 text-sm font-semibold text-pvdark shadow transition hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-pvteal focus:ring-offset-2 focus:ring-offset-[#071a1b]"
                 >
                   Deposit
@@ -326,14 +402,29 @@ export default function HomePage() {
       {/* Modals */}
       {showDeposit && (
         <DepositModal
-          timelockEndsAt={vault.timelockEndsAt}   
+          timelockEndsAt={vault.timelockEndsAt} 
           onClose={() => setShowDeposit(false)}
           onDeposit={(amount) => {
+            const credited = Number(amount || 0);
             setVault((prev) => ({
               ...prev,
-              balance: Number(prev.balance) + Number(amount), 
+              balance: Number(prev.balance) + credited,
             }));
+
+            const newWallet = Math.max(0, Number(walletUSDC) - credited);
+            setWalletUSDC(newWallet);
+            if (address) {
+              localStorage.setItem("fundora_balance_" + address, String(newWallet));
+            }
+
+            confetti({
+              particleCount: 100,
+              spread: 70,
+              origin: { y: 0.6 },
+            });
+
             setShowDeposit(false);
+            setShowCoach(false);
           }}
         />
       )}
