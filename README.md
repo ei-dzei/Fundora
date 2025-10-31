@@ -1,4 +1,4 @@
-# 🏦 Fundora — On-chain Pension Vaults (Frontend)
+# 🏦 Fundora — On-chain Pension Vaults
 > _“Save, lock, and borrow — all in a transparent on-chain vault.”_
 
 [![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
