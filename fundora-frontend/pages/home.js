@@ -5,7 +5,6 @@ import { useAccount } from "wagmi";
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
-import confetti from "canvas-confetti";
 import DepositModal from "../components/DepositModal";
 import LoanModal from "../components/LoanModal";
 import TimelockModal from "../components/TimelockModal";
@@ -416,12 +415,6 @@ export default function HomePage() {
             if (address) {
               localStorage.setItem("fundora_balance_" + address, String(newWallet));
             }
-
-            confetti({
-              particleCount: 100,
-              spread: 70,
-              origin: { y: 0.6 },
-            });
 
             setShowDeposit(false);
             setShowCoach(false);
