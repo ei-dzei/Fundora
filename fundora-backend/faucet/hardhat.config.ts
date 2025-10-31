@@ -17,30 +17,38 @@ const config: HardhatUserConfig = {
       accounts: [configVariable("PRIVATE_KEY")],
       chainId: 84532,
     },
+
+    sepolia: {
+      type: "http",
+      chainType: "l1",                                  
+      url: configVariable("SEPOLIA_RPC_URL"),           
+      accounts: [configVariable("PRIVATE_KEY")],
+      chainId: 11155111,
+    },
   },
 
-  verify: {
-    etherscan: {
-      apiKey: process.env.ETHERSCAN_API_KEY,
+  // verify: {
+  //   etherscan: {
+  //     apiKey: process.env.ETHERSCAN_API_KEY,
 
-      // customChains causing error?
-      // Commented temporarily
+  //     // customChains causing error?
+  //     // Commented temporarily
 
-      // customChains: [
-      //   {
-      //     network: "baseSepolia",
-      //     chainId: 84532,
-      //     urls: {
-      //       // Problem
-      //       // Detects the API Key as Etherscan V1
-      //       // Use documentation: https://docs.etherscan.io/v2-migration
-      //       apiURL: "https://api.etherscan.io/v2/api?chainid=84532",
-      //       browserURL: "https://sepolia.basescan.org"
-      //     }
-      //   }
-      // ]
-    },
-  }
+  //     // customChains: [
+  //     //   {
+  //     //     network: "baseSepolia",
+  //     //     chainId: 84532,
+  //     //     urls: {
+  //     //       // Problem
+  //     //       // Detects the API Key as Etherscan V1
+  //     //       // Use documentation: https://docs.etherscan.io/v2-migration
+  //     //       apiURL: "https://api.etherscan.io/v2/api?chainid=84532",
+  //     //       browserURL: "https://sepolia.basescan.org"
+  //     //     }
+  //     //   }
+  //     // ]
+  //   },
+  // }
 };
 
 export default config;

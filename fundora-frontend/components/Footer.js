@@ -19,7 +19,7 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-6 mt-8 text-sm text-gray-500">© {new Date().getFullYear()} Fundora — Privacy Policy • Terms of Service</div>
+      <div className="max-w-6xl mx-auto px-6 mt-8 text-sm text-gray-500">© {new Date().getFullYear()} Fundora | Privacy Policy • Terms of Service</div>
     </footer>
   )
 }
