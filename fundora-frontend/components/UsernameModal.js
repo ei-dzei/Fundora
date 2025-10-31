@@ -108,7 +108,7 @@ export default function UsernameModal({ address, onClose, onSave }) {
                   setName(e.target.value);
                   if (error) setError("");
                 }}
-                placeholder="e.g. ocean_builder"
+                placeholder="e.g. username_123"
                 className="w-full bg-transparent py-2.5 text-white placeholder:text-zinc-500 focus:outline-none"
               />
             </div>
