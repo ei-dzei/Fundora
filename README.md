@@ -92,7 +92,7 @@ Your app will run at **[http://localhost:3000](http://localhost:3000)** using th
 | Layer               | Technologies                                  |
 | ------------------- | --------------------------------------------- |
 | **Frontend**        | Next.js 15 (React 19) + Tailwind CSS 3        |
-| **Blockchain**      | Ethereum Sepolia Testnet, wagmi, ethers.js    |
+| **Blockchain**      | Base Sepolia Testnet, wagmi, ethers.js    |
 | **UI/UX**           | Framer Motion (animations), ShadCN Components |
 | **Persistence**     | LocalStorage (simulated state)                |
 | **Smart Contracts** | FaucetModule.sol + MockUSDC.sol               |
